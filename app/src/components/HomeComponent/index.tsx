@@ -17,23 +17,25 @@ import { Ionicons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from "react-native-modal";
 import ActionButton from 'react-native-action-button';
-import EditImage from '../../assets/editImage.png'
 import ArrowIcon from '../../assets/arrowIcon.png'
 
 interface Props {
-    groups: { id: number, title: string, name: string }[],
-    onRemoveGroup: (id: number) => void,
-    onCreateGroup: (newGroup: { id: number, title: string, name: string }) => void,
-    onAddGroup: (newGroup: { id: number, title: string, name: string }) => void,
+    groups: { id: string, title: string, name: string }[],
+    onRemoveGroup: (id: string) => void,
+    onCreateGroup: (newGroup: { id: string, title: string, name: string }) => void,
+    onAddGroup: (newGroup: { id: string, title: string, name: string }) => void,
+    handleMural: (group: { id: string, title: string, name: string }) => void,
 }
 
-export function HomeComponent({ groups, onRemoveGroup, onCreateGroup, onAddGroup }: Props) {
+export function HomeComponent({ groups, onRemoveGroup, onCreateGroup, onAddGroup, handleMural }: Props) {
 
     const [showAddGroupModal, setShowAddGroupModal] = useState(false);
     const [showSearchGroupModal, setShowSearchGroupModal] = useState(false);
     const [newGroupTitle, setNewGroupTitle] = useState("");
     const [newTeacherName, setNewTeacherName] = useState("");
-    const [searchedGroup, setSearchedGroup] = useState<{ id: number, title: string, name: string } | null>(null);
+    const [searchedGroup, setSearchedGroup] = useState<{ id: string, title: string, name: string } | null>(null);
+    const [selectedGroup, setSelectedGroup] = useState<{ id: string, title: string, name: string } | null>(null);
+
 
     const creationSchema = Yup.object({
         groupTitle: Yup.string().max(10, 'Insira no máximo 10 caracteres').required('Insira o nome do grupo'),
@@ -64,7 +66,7 @@ export function HomeComponent({ groups, onRemoveGroup, onCreateGroup, onAddGroup
 
     const handleCreateGroup = () => {
         const newGroup = {
-            id: Math.floor(Math.random() * 1000) + 1,
+            id: simpleUUID(),
             title: formik.values.groupTitle,
             name: formik.values.teacherName,
         };
@@ -75,10 +77,10 @@ export function HomeComponent({ groups, onRemoveGroup, onCreateGroup, onAddGroup
         formik.resetForm();
     }
 
-    const handleSearchGroupById = () => {
+    const handleSearchGroupByName = () => {
         if (formik.values.groupSearch) {
-            const groupId = Number(formik.values.groupSearch);
-            const group = groups.find((g) => g.id === groupId);
+            const groupName = String(formik.values.groupSearch).trim().toLowerCase();
+            const group = groups.find((g) => g.title.toLowerCase() === groupName);
             if (group) {
                 setSearchedGroup(group);
                 const alreadyInGroup = groups.some((g) => g.id === group.id);
@@ -95,17 +97,25 @@ export function HomeComponent({ groups, onRemoveGroup, onCreateGroup, onAddGroup
         }
     }
 
-    const handleRemoveGroup = (id: number) => {
+    const handleRemoveGroup = (id: string) => {
         onRemoveGroup(id);
     }
 
-    const renderItem = ({ item }: { item: { id: number, title: string, name: string } }) => (
-        <TouchableOpacity onPress={() => { }}>
+    function simpleUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (Math.random() * 16) | 0,
+                v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        });
+    }
+
+    const renderItem = ({ item }: { item: { id: string, title: string, name: string } }) => (
+        <TouchableOpacity onPress={() => {
+            setSelectedGroup(item);
+            handleMural(item);  // Adicione esta linha
+        }}>
             <View style={styles.tableContainer}>
                 <DataTable style={styles.dataTableContainer}>
-                    <DataTable.Cell style={styles.idTitle}>
-                        <Text style={styles.titleText}> ID </Text>
-                    </DataTable.Cell>
                     <DataTable.Cell style={styles.groupTitle}>
                         <Text style={styles.titleText}> Grupo </Text>
                     </DataTable.Cell>
@@ -115,9 +125,6 @@ export function HomeComponent({ groups, onRemoveGroup, onCreateGroup, onAddGroup
                     <DataTable.Cell style={styles.emptyTable}> </DataTable.Cell>
                 </DataTable>
                 <DataTable style={styles.dataTableContainer}>
-                    <DataTable.Cell style={styles.idItem}>
-                        <Text style={styles.itemText}> {item.id} </Text>
-                    </DataTable.Cell>
                     <DataTable.Cell style={styles.groupItem}>
                         <Text style={styles.itemText}> {item.title} </Text>
                     </DataTable.Cell>
@@ -219,7 +226,7 @@ export function HomeComponent({ groups, onRemoveGroup, onCreateGroup, onAddGroup
                                     <HelperText type='error'>{formik.errors.groupSearch}</HelperText>
                                 </IF>
                                 <View style={styles.modalButtonsContainer}>
-                                    <TouchableOpacity style={styles.modalButton1} onPress={handleSearchGroupById}>
+                                    <TouchableOpacity style={styles.modalButton1} onPress={handleSearchGroupByName}>
                                         <Text style={styles.modalButtonText}>Buscar</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.modalButton2} onPress={() => { setShowSearchGroupModal(false); formik.resetForm(); }}>

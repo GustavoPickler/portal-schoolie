@@ -4,8 +4,17 @@ import OnBoarding from '../screens/OnBoarding'
 import LogIn from '../screens/LogIn'
 import Register from '../screens/Register';
 import Home from '../screens/Home';
+import Mural from '../screens/Mural';
 
-const { Navigator, Screen } = createStackNavigator()
+const { Navigator, Screen } = createStackNavigator<AuthStackParamList>()
+
+export type AuthStackParamList = {
+    OnBoarding: undefined;
+    LogIn: undefined;
+    Register: undefined;
+    Home: undefined;
+    Mural: { groupId: string };
+  };
 
 export default function AuthRoutes() {
     return (
@@ -19,7 +28,7 @@ export default function AuthRoutes() {
         >
             <Screen
                 name="OnBoarding"
-                component={Home}
+                component={OnBoarding}
             />
             <Screen
                 name="LogIn"
@@ -32,6 +41,10 @@ export default function AuthRoutes() {
             <Screen
                 name="Home"
                 component={Home}
+            />
+            <Screen
+                name="Mural"
+                component={Mural}
             />
         </Navigator>
     )

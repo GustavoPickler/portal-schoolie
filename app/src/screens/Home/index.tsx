@@ -9,19 +9,26 @@ import { useNavigation } from '@react-navigation/native'
 import { styles } from './styles'
 import { HomeComponent } from '../../components/HomeComponent'
 import IllustrationImg from '../../assets/borderSchoolieIcon.png'
-import LensIcon from '../../../src/assets/lensIcon.png'
+import { NavigationProp } from '@react-navigation/native';
+import { AuthStackParamList } from '../../routes/auth.routes'
 
 export default function Home() {
 
-    const [groups, setGroups] = useState<{ id: number, title: string, name: string }[]>([]);
+    const [groups, setGroups] = useState<{ id: string, title: string, name: string }[]>([]);
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<AuthStackParamList, 'Home'>>();
 
-    const handleCreateGroup = (newGroup: { id: number, title: string, name: string }) => {
+
+    function navigateToMural(group: { id: string; title: string; name: string }) {
+        const groupId = group.id;
+        navigation.navigate('Mural', { groupId });
+    }
+
+    const handleCreateGroup = (newGroup: { id: string, title: string, name: string }) => {
         setGroups([...groups, newGroup]);
     };
 
-    const handleRemoveGroup = (id: number) => {
+    const handleRemoveGroup = (id: string) => {
         const updatedGroups = groups.filter(group => group.id !== id);
         setGroups(updatedGroups);
     };
@@ -39,7 +46,7 @@ export default function Home() {
                 </Text>}
             />
             <View style={styles.content}>
-                <HomeComponent groups={groups} onRemoveGroup={handleRemoveGroup} onCreateGroup={handleCreateGroup} onAddGroup={handleCreateGroup} />
+                <HomeComponent groups={groups} onRemoveGroup={handleRemoveGroup} onCreateGroup={handleCreateGroup} onAddGroup={handleCreateGroup} handleMural={navigateToMural} />
             </View>
         </>
     )

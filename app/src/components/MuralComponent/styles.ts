@@ -40,12 +40,8 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         justifyContent: 'center',
     },
-    idTitle: {
-        flex: 1,
-        justifyContent: 'center',
-    },
     groupTitle: {
-        flex: 2,
+        flex: 1,
         justifyContent: 'center',
         textAlign: 'center',
     },
@@ -54,12 +50,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
     },
-    idItem: {
-        flex: 1,
-        justifyContent: 'center',
-    },
     groupItem: {
-        flex: 2,
+        flex: 1,
         justifyContent: 'center',
         textAlign: 'center',
     },
@@ -79,13 +71,14 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         textAlign: "center",
         justifyContent: 'center',
+        verticalAlign: 'center',
         marginTop: 10,
     },
     tableContainer: {
         marginBottom: 20,
         border: 'solid #000',
         borderWidth: 2,
-        borderRadius: 10,
+        borderRadius:10,
         height: 70,
         zIndex: 1111111,
         borderColor: '#FF6110'
@@ -248,10 +241,10 @@ export const styles = StyleSheet.create({
 
     },
     subscribeContainer2: {
-        marginTop: 300
+        marginTop: 360
     },
     subscribeText: {
-        fontSize: 36,
+        fontSize: 28,
         fontWeight: 'normal',
         color: '#949494',
         textAlign: 'center'
