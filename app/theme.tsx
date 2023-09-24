@@ -1,4 +1,5 @@
 import { DefaultTheme } from 'react-native-paper'
+import { theme as globalTheme } from './src/global/styles/theme';
 
 declare global {
   namespace ReactNativePaper {
@@ -14,7 +15,7 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#FF6110',
-    backgroundColor: '#FF6110'
+    backgroundColor: globalTheme.colors.White
   },
 }
 

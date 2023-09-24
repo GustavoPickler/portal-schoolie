@@ -1,11 +1,12 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { theme } from '../../global/styles/theme'
 
 const styles = StyleSheet.create({
-
     containerFull: {
-        justifyContent: 'center',
+        display: 'flex',
+        alignItems: 'center',
         flex: 1,
+        height: Dimensions.get('screen').height,
     },
     container: {
         marginLeft: 'auto',

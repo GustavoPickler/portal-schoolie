@@ -4,7 +4,8 @@ export const theme = {
         Black: '#000000',
         Grey: '#353A3E',
         Line: '#AB402A',
-        Orange: '#FF6110'
+        Orange: '#FF6110',
+        LightOrange: '#fdb642'
     },
 
     fonts: {

@@ -6,15 +6,15 @@ import * as Yup from 'yup'
 import { } from 'react-native'
 import { styles } from "./styles";
 import IF from '../IFComponent'
+import { User } from "../../screens/LogIn";
 
 interface Props {
-    handleSubmit: () => void;
-    handleRegister: () => void;
+    handleSubmit: (user: User) => void;
 }
 
-export default function LogInForm({ handleRegister, handleSubmit }: Props) {
-
-    const [secureTextEntryPassword, setSecureTextEntryPassword] = useState(true)
+export default function LogInForm({ handleSubmit }: Props) {
+    const [secureTextEntryPassword, setSecureTextEntryPassword] = useState(true);
+    const [isLoading, setLoading] = useState(false);
 
     const loginSchema = Yup.object({
         email: Yup.string().email('Endereço de email inválido').required('Campo obrigatório'),
@@ -29,8 +29,10 @@ export default function LogInForm({ handleRegister, handleSubmit }: Props) {
         validateOnChange: false,
         validateOnBlur: false,
         validationSchema: loginSchema,
-        onSubmit: () => {
-            handleSubmit()
+        onSubmit: async (values) => {
+            setLoading(true);
+            await handleSubmit(values)
+            setLoading(false);
         },
     })
 
@@ -77,10 +79,14 @@ export default function LogInForm({ handleRegister, handleSubmit }: Props) {
                 </View>
 
                 <View style={styles.containerInput}>
-                    <Button style={styles.button} mode='text' onPress={() => formik.handleSubmit()}>Entrar</Button>
-                </View>
-                <View style={styles.containerInput}>
-                    <Button style={styles.button} mode='text' onPress={handleRegister}>Cadastrar-se</Button>
+                    <Button 
+                        style={styles.button} 
+                        mode='contained'
+                        onPress={() => formik.handleSubmit()}
+                        loading={isLoading}
+                        disabled={isLoading}>
+                            Entrar
+                        </Button>
                 </View>
             </View>
         </>

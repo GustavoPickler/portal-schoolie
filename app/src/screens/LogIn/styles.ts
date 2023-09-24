@@ -2,20 +2,30 @@ import { StyleSheet } from 'react-native'
 import { theme } from '../../global/styles/theme'
 
 const styles = StyleSheet.create({
-
+    header:{
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 20,
+        paddingBottom: 0,
+        justifyContent: 'space-between',
+        backgroundColor: theme.colors.LightOrange
+    },
     containerFull: {
-        justifyContent: 'center',
-        flex: 1,
+        flex: 1
     },
     container: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        borderBottomEndRadius: 80,
+        borderBottomStartRadius: 80,
+        backgroundColor: theme.colors.LightOrange,
+        height: '40%',
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
     iconImage: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        height: 150,
-        width: 294
+        height: 300,
+        width: 450
     },
     fonts: {
         maxWidth: '100%',
@@ -24,7 +34,7 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         fontFamily: theme.fonts.nunito800,
         fontSize: 48,
-        color: theme.colors.Orange
+        color: theme.colors.Orange,
     }
 })
 

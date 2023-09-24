@@ -10,14 +10,12 @@ export const styles = StyleSheet.create({
     containerInput: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        width: width -130,
+        width: '90%',
+        marginTop: 20
     },
     button: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
         marginTop: 10,
-        borderRadius:15,
-        width:180
+        borderRadius:15
     },
     keyboardAvoidView: {
     height: 100,
